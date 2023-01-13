@@ -5,7 +5,7 @@ import { AuthLayout } from '../layout/AuthLayout';
 
 export const LoginPage = () => {
   return (
-    <AuthLayout title='Login'>
+    <AuthLayout title='Iniciar sesión'>
       <form>
         <Grid container>
           <Grid item xs={12} sx={{ mb: 2 }}>
