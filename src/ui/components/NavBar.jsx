@@ -20,7 +20,7 @@ export const NavBar = ({ drawerWidth }) => {
         </IconButton>
         <Grid container justifyContent='space-between' alignItems='center'>
           <Typography variant='h6' noWrap component='div'>
-            JournalApp
+            FotoBlogg
           </Typography>
 
           <IconButton>
