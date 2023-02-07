@@ -3,28 +3,32 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { useForm } from '../../hooks';
 import { AuthLayout } from '../layout/AuthLayout';
+import { useDispatch } from 'react-redux';
+import { startCreatingUserWithEmailPassword } from '../../store/auth';
 
 const formData = {
-  name: '',
+  displayName: '',
   email: '',
   password: '',
 };
 
 const formValidations = {
-  name: [(value) => value.length >= 3, 'El nombre es obligatorio'],
+  displayName: [(value) => value.length >= 3, 'El nombre es obligatorio'],
   email: [(value) => value.includes('@'), 'El valor debe ser un correo'],
   password: [(value) => value.length >= 6, 'Debe contener 6 o mas caracteres'],
 };
 
 export const RegisterPage = () => {
   const [formSubmited, setFormSubmited] = useState(false);
+  const dispatch = useDispatch();
 
   const {
+    formState,
     email,
     password,
-    name,
+    displayName,
     onInputChange,
-    onResetForm,
+
     isFormValid,
     nameValid,
     emailValid,
@@ -38,7 +42,7 @@ export const RegisterPage = () => {
 
     setFormSubmited(true);
 
-    onResetForm();
+    dispatch(startCreatingUserWithEmailPassword(formState));
   };
 
   return (
@@ -50,8 +54,8 @@ export const RegisterPage = () => {
               label='Nombre'
               type='text'
               placeholder='John Doe'
-              name='name'
-              value={name}
+              name='displayName'
+              value={displayName}
               onChange={onInputChange}
               fullWidth
               error={!!nameValid && formSubmited}
