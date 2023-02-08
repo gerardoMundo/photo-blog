@@ -1,4 +1,5 @@
 import { Grid, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 
 export const AuthLayout = ({ children, title = '' }) => {
   return (
@@ -31,4 +32,9 @@ export const AuthLayout = ({ children, title = '' }) => {
       </Grid>
     </Grid>
   );
+};
+
+AuthLayout.propTypes = {
+  children: PropTypes.string,
+  title: PropTypes.string,
 };

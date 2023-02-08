@@ -1,15 +1,27 @@
+/* eslint-disable no-extra-boolean-cast */
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from '@mui/icons-material';
-import { Button, Grid, Link, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useForm } from '../../hooks';
-import { checkinAuthentication, googleAuthentication } from '../../store/auth';
+import {
+  googleAuthentication,
+  startLoginWithEmailPassword,
+} from '../../store/auth';
 import { AuthLayout } from '../layout/AuthLayout';
-import { useMemo } from 'react';
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.auth);
+
+  const { status, errorMessage } = useSelector((state) => state.auth);
 
   const { email, password, onInputChange } = useForm({
     email: '',
@@ -21,18 +33,16 @@ export const LoginPage = () => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(checkinAuthentication());
+    dispatch(startLoginWithEmailPassword({ email, password }));
   };
 
   const onSignGoogle = () => {
-    console.log('onSignGoogle');
-
     dispatch(googleAuthentication());
   };
 
   return (
     <AuthLayout title='Iniciar sesión'>
-      <form onSubmit={onSubmit}>
+      <form className='animate__animated animate__fadeIn' onSubmit={onSubmit}>
         <Grid container>
           <Grid item xs={12} sx={{ mb: 2 }}>
             <TextField
@@ -55,6 +65,9 @@ export const LoginPage = () => {
               placeholder='Escribe tu contraseña'
               fullWidth
             />
+          </Grid>
+          <Grid display={!!errorMessage ? '' : 'none'} item xs={12}>
+            <Alert severity='error'>{errorMessage}</Alert>
           </Grid>
         </Grid>
         <Grid container spacing={2} sx={{ mb: 2, mt: 2 }}>

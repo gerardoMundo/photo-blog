@@ -4,6 +4,7 @@ import { Button, Grid, TextField, Typography } from '@mui/material';
 export const NoteView = () => {
   return (
     <Grid
+      className='animate__animated animate__fadeIn'
       container
       direction='row'
       justifyContent='space-between'
