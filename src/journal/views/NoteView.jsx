@@ -1,7 +1,30 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { SaveAltOutlined } from '@mui/icons-material';
 import { Button, Grid, TextField, Typography } from '@mui/material';
+import { useForm } from '../../hooks/useForm';
+import { useEffect, useMemo } from 'react';
+import { setActiveNote } from '../../store/journal/journalSlice';
+import { startSavingNote } from '../../store/journal';
 
 export const NoteView = () => {
+  const dispatch = useDispatch();
+  const { active: note } = useSelector((state) => state.journal);
+
+  const { title, body, date, onInputChange, formState } = useForm(note);
+
+  const dateString = useMemo(() => {
+    const newDate = new Date(date);
+    return newDate.toUTCString();
+  }, [date]);
+
+  useEffect(() => {
+    dispatch(setActiveNote(formState));
+  }, [formState]);
+
+  const onSaveNote = () => {
+    dispatch(startSavingNote());
+  };
+
   return (
     <Grid
       className='animate__animated animate__fadeIn'
@@ -13,12 +36,12 @@ export const NoteView = () => {
     >
       <Grid item>
         <Typography fontSize={39} fontWeight='light'>
-          28 de Agosto de 2022.
+          {dateString}
         </Typography>
       </Grid>
 
       <Grid item>
-        <Button sx={{ padding: 1 }}>
+        <Button onClick={onSaveNote} sx={{ padding: 1 }}>
           <SaveAltOutlined sx={{ mr: 1, fontSize: 30 }} />
           Guardar
         </Button>
@@ -30,6 +53,9 @@ export const NoteView = () => {
           variant='filled'
           fullWidth
           placeholder='Ingrese un título'
+          name='title'
+          value={title}
+          onChange={onInputChange}
           label='Título'
           sx={{ border: 'none', mb: 1 }}
         />
@@ -38,6 +64,9 @@ export const NoteView = () => {
           variant='filled'
           fullWidth
           placeholder='¿Qué sucedió hoy?'
+          name='body'
+          value={body}
+          onChange={onInputChange}
           minRows={5}
           multiline
           sx={{ border: 'none', mb: 1 }}
