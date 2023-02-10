@@ -1,14 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { SaveAltOutlined } from '@mui/icons-material';
+import { SaveAltOutlined, UploadFileOutlined } from '@mui/icons-material';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import { useForm } from '../../hooks/useForm';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { setActiveNote } from '../../store/journal/journalSlice';
-import { startSavingNote } from '../../store/journal';
+import { startSavingNote, startUploadingFiles } from '../../store/journal';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
 
 export const NoteView = () => {
+  const inputFileRef = useRef();
+
   const dispatch = useDispatch();
-  const { active: note } = useSelector((state) => state.journal);
+  const {
+    active: note,
+    messageSaved,
+    isSaving,
+  } = useSelector((state) => state.journal);
 
   const { title, body, date, onInputChange, formState } = useForm(note);
 
@@ -21,8 +29,20 @@ export const NoteView = () => {
     dispatch(setActiveNote(formState));
   }, [formState]);
 
+  useEffect(() => {
+    if (messageSaved.length > 0) {
+      Swal.fire('¡Éxito!', messageSaved, 'success');
+    }
+  }, [messageSaved]);
+
   const onSaveNote = () => {
     dispatch(startSavingNote());
+  };
+
+  const onInputFileChange = ({ target }) => {
+    if (target.files === 0) return;
+
+    dispatch(startUploadingFiles(target.files));
   };
 
   return (
@@ -40,8 +60,26 @@ export const NoteView = () => {
         </Typography>
       </Grid>
 
+      <input
+        ref={inputFileRef}
+        type='file'
+        multiple
+        onChange={onInputFileChange}
+        style={{ display: 'none' }}
+      />
+
       <Grid item>
-        <Button onClick={onSaveNote} sx={{ padding: 1 }}>
+        <Button
+          disabled={isSaving}
+          onClick={() => inputFileRef.current.click()}
+        >
+          <UploadFileOutlined />
+          Subir fotos
+        </Button>
+      </Grid>
+
+      <Grid item>
+        <Button disabled={isSaving} onClick={onSaveNote} sx={{ padding: 1 }}>
           <SaveAltOutlined sx={{ mr: 1, fontSize: 30 }} />
           Guardar
         </Button>
