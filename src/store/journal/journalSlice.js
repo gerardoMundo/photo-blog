@@ -42,12 +42,25 @@ export const journalSlice = createSlice({
       state.active.imageUrls = [...state.active.imageUrls, ...action.payload];
       state.isSaving = false;
     },
-    deleteNoteById: (state, action) => {},
+    clearStateAtLogout: (state) => {
+      (state.isSaving = false),
+        (state.messageSaved = ''),
+        (state.notes = []),
+        (state.active = null);
+    },
+    deleteNoteById: (state, action) => {
+      (state.active = null),
+        (state.isSaving = false),
+        (state.notes = state.notes.filter(
+          (note) => note.id !== action.payload
+        ));
+    },
   },
 });
 
 export const {
   addMewEmptyNote,
+  clearStateAtLogout,
   deleteNoteById,
   savingNewNote,
   setActiveNote,

@@ -1,5 +1,5 @@
 //acciones asíncronas
-import { collection, doc, setDoc } from 'firebase/firestore/lite';
+import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore/lite';
 import { FireBaseDB } from '../../firebase/config';
 import { loadNotes } from '../../helpers/loadNotes';
 import { uploadFile } from '../../helpers/uploadFile';
@@ -11,6 +11,7 @@ import {
   setSaving,
   updatedNote,
   setPhotosToActiveNote,
+  deleteNoteById,
 } from './';
 
 export const startNewNote = () => {
@@ -22,6 +23,7 @@ export const startNewNote = () => {
     const newNote = {
       title: '',
       body: '',
+      imageUrls: [],
       date: new Date().getTime(),
     };
 
@@ -80,5 +82,18 @@ export const startUploadingFiles = (files = []) => {
     const photosUrl = await Promise.all(filesOnPromise);
 
     dispatch(setPhotosToActiveNote(photosUrl));
+  };
+};
+
+export const startgDeletingNote = () => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { active: note } = getState().journal;
+
+    const docRef = doc(FireBaseDB, `${uid}/journal/notes/${note.id}`);
+
+    await deleteDoc(docRef);
+
+    dispatch(deleteNoteById(note.id));
   };
 };

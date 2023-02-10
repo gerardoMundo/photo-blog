@@ -1,10 +1,19 @@
+import { useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SaveAltOutlined, UploadFileOutlined } from '@mui/icons-material';
+import {
+  DeleteOutline,
+  SaveAltOutlined,
+  UploadFileOutlined,
+} from '@mui/icons-material';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import { useForm } from '../../hooks/useForm';
-import { useEffect, useMemo, useRef } from 'react';
 import { setActiveNote } from '../../store/journal/journalSlice';
-import { startSavingNote, startUploadingFiles } from '../../store/journal';
+import {
+  startgDeletingNote,
+  startSavingNote,
+  startUploadingFiles,
+} from '../../store/journal';
+import { ImageGallery } from '../../ui/components/ImageGallery';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
 
@@ -37,6 +46,10 @@ export const NoteView = () => {
 
   const onSaveNote = () => {
     dispatch(startSavingNote());
+  };
+
+  const onDeleteNote = () => {
+    dispatch(startgDeletingNote());
   };
 
   const onInputFileChange = ({ target }) => {
@@ -109,6 +122,15 @@ export const NoteView = () => {
           multiline
           sx={{ border: 'none', mb: 1 }}
         />
+      </Grid>
+
+      <ImageGallery images={note.imageUrls} />
+
+      <Grid container justifyContent='flex-start' alignItems='center'>
+        <Button onClick={onDeleteNote} sx={{ mt: 2 }} color='error'>
+          <DeleteOutline />
+          Eliminar nota
+        </Button>
       </Grid>
     </Grid>
   );

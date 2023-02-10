@@ -4,6 +4,7 @@ import {
   registerUserWithEmailAndPassword,
   signInWithGoogle,
 } from '../../firebase';
+import { clearStateAtLogout } from '../journal';
 import { checkingCredentials, login, logOut } from './authSlice';
 
 export const checkinAuthentication = (email, password) => {
@@ -62,6 +63,8 @@ export const startLogOut = () => {
   return async (dispatch) => {
     try {
       aplicationLogOut();
+
+      dispatch(clearStateAtLogout());
 
       dispatch(logOut());
     } catch (error) {
