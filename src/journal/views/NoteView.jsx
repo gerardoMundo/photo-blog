@@ -123,15 +123,14 @@ export const NoteView = () => {
           sx={{ border: 'none', mb: 1 }}
         />
       </Grid>
-
-      <ImageGallery images={note.imageUrls} />
-
       <Grid container justifyContent='flex-start' alignItems='center'>
         <Button onClick={onDeleteNote} sx={{ mt: 2 }} color='error'>
           <DeleteOutline />
           Eliminar nota
         </Button>
       </Grid>
+
+      <ImageGallery images={note.imageUrls} />
     </Grid>
   );
 };

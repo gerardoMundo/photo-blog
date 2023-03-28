@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { LogoutOutlined, MenuOutlined } from '@mui/icons-material';
+import { MenuOutlined } from '@mui/icons-material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { AppBar, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import { startLogOut } from '../../store/auth/thunks';
 
@@ -29,11 +30,11 @@ export const NavBar = ({ drawerWidth }) => {
         </IconButton>
         <Grid container justifyContent='space-between' alignItems='center'>
           <Typography variant='h6' noWrap component='div'>
-            FotoBlogg
+            Foto Blog
           </Typography>
 
           <IconButton onClick={onLogOut}>
-            <LogoutOutlined color='error' />
+            <ExitToAppIcon color='action' />
           </IconButton>
         </Grid>
       </Toolbar>

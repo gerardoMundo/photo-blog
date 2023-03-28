@@ -12,5 +12,8 @@ export const mainTheme = createTheme({
     error: {
       main: red.A400,
     },
+    action: {
+      main: '#ffffff',
+    },
   },
 });

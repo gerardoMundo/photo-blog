@@ -1,4 +1,4 @@
-import { StarOutline } from '@mui/icons-material';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import { Grid, Typography } from '@mui/material';
 
 export const NothingSelectedView = () => {
@@ -18,7 +18,7 @@ export const NothingSelectedView = () => {
       }}
     >
       <Grid item sx={12}>
-        <StarOutline sx={{ fontSize: 100, color: 'white' }} />
+        <DriveFolderUploadIcon sx={{ fontSize: 100, color: 'white' }} />
       </Grid>
       <Typography variant='h5' color='whitesmoke'>
         Selecciona o crea una entrada
